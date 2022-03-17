@@ -1,7 +1,7 @@
 package com.nnk.springboot;
 
 import com.nnk.springboot.domain.Rule;
-import com.nnk.springboot.repositories.RuleNameRepository;
+import com.nnk.springboot.repositories.RuleRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class RuleTests {
 
 	@Autowired
-	private RuleNameRepository ruleNameRepository;
+	private RuleRepository ruleNameRepository;
 
 	@Test
 	public void ruleTest() {
