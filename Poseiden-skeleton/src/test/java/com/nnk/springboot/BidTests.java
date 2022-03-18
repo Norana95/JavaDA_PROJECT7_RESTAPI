@@ -1,7 +1,7 @@
 /*package com.nnk.springboot;
 
-import com.nnk.springboot.domain.Bid;
-import com.nnk.springboot.repositories.BidRepository;
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.repositories.BidListRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class BidTests {
 
 	@Autowired
-	private BidRepository bidRepository;
+	private BidListRepository bidRepository;
 
 	@Test
 	public void bidTest() {
-		Bid bid = new Bid("Account Test", "Type Test", 10d);
+		BidList bid = new BidList("Account Test", "Type Test", 10d);
 
 		// Save
 		bid = bidListRepository.save(bid);
@@ -34,13 +34,13 @@ public class BidTests {
 		Assert.assertEquals(bid.getBidQuantity(), 20d, 20d);
 
 		// Find
-		List<Bid> listResult = bidRepository.findAll();
+		List<BidList> listResult = bidRepository.findAll();
 		Assert.assertTrue(listResult.size() > 0);
 
 		// Delete
 		Integer id = bid.getBidId();
 		bidRepository.delete(bid);
-		Optional<Bid> bidList = bidRepository.findById(id);
+		Optional<BidList> bidList = bidRepository.findById(id);
 		Assert.assertFalse(bidList.isPresent());
 	}
 }

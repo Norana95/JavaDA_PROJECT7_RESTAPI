@@ -5,12 +5,12 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bidList")
-public class Bid {
+public class BidList {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Integer bidId;
+    private Integer BidListId;
     private String account;
     public String type;
     public Double bidQuantity;
@@ -33,23 +33,23 @@ public class Bid {
     public String sourceListId;
     public String side;
 
-    public Bid() {
+    public BidList() {
     }
 
     public Integer getId() {
-        return bidId;
+        return BidListId;
     }
 
     public void setId(Integer id) {
-        this.bidId = id;
+        this.BidListId = id;
     }
 
-    public Integer getBidId() {
-        return bidId;
+    public Integer getBidListId() {
+        return BidListId;
     }
 
-    public void setBidId(Integer bidId) {
-        this.bidId = bidId;
+    public void setBidListId(Integer bidListId) {
+        this.BidListId = bidListId;
     }
 
     public String getAccount() {

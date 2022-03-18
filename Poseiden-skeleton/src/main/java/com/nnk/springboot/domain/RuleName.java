@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "rulename")
-public class Rule {
+public class RuleName {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -16,7 +16,7 @@ public class Rule {
     public String sqlStr;
     public String sqlPart;
 
-    public Rule() {
+    public RuleName() {
     }
 
     public Integer getId() {

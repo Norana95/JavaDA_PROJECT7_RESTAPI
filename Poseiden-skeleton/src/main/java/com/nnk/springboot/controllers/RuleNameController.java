@@ -1,6 +1,6 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.Rule;
+import com.nnk.springboot.domain.RuleName;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,42 +13,42 @@ import javax.validation.Valid;
 
 @Controller
 public class RuleNameController {
-    // TODO: Inject Rule service
+    // TODO: Inject RuleName service
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
     {
-        // TODO: find all Rule, add to model
+        // TODO: find all RuleName, add to model
         return "ruleName/list";
     }
 
     @GetMapping("/ruleName/add")
-    public String addRuleForm(Rule bid) {
+    public String addRuleForm(RuleName ruleName) {
         return "ruleName/add";
     }
 
     @PostMapping("/ruleName/validate")
-    public String validate(@Valid Rule ruleName, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rule list
+    public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
+        // TODO: check data valid and save to db, after saving return RuleName list
         return "ruleName/add";
     }
 
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rule by Id and to model then show to the form
+        // TODO: get RuleName by Id and to model then show to the form
         return "ruleName/update";
     }
 
     @PostMapping("/ruleName/update/{id}")
-    public String updateRuleName(@PathVariable("id") Integer id, @Valid Rule ruleName,
+    public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rule and return Rule list
+        // TODO: check required fields, if valid call service to update RuleName and return RuleName list
         return "redirect:/ruleName/list";
     }
 
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rule by Id and delete the Rule, return to Rule list
+        // TODO: Find RuleName by Id and delete the RuleName, return to RuleName list
         return "redirect:/ruleName/list";
     }
 }
