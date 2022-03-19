@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank(message = "Username is mandatory")
     private String username;
@@ -61,4 +61,5 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
 }

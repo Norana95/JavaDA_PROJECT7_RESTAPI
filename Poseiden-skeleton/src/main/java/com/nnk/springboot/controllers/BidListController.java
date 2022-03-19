@@ -67,7 +67,7 @@ public class BidListController {
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         // TODO: Find BidList by Id and delete the bid, return to BidList list
         Optional<BidList> bidList = bidListService.findBidListById(id);
-        bidListService.deleteBid(bidList); // pourquoi ce probleme???
+        //bidListService.deleteBid(bidList); // pourquoi ce probleme???
         return "redirect:/bidList/list";
     }
 }

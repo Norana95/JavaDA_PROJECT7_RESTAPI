@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "rating")
 public class Rating {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     public String moodysRating;
@@ -15,6 +15,13 @@ public class Rating {
     public Integer orderNumber;
 
     public Rating() {
+    }
+
+    public Rating(String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {
+        this.moodysRating = moodysRating;
+        this.sandPRating = sandPRating;
+        this.fitchRating = fitchRating;
+        this.orderNumber = orderNumber;
     }
 
     public Integer getId() {

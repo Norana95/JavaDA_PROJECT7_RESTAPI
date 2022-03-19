@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "bidList")
+@Table(name = "BIDLIST")
 public class BidList {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer BidListId;
     private String account;
@@ -34,6 +34,12 @@ public class BidList {
     public String side;
 
     public BidList() {
+    }
+
+    public BidList(String account, String type, Double bidQuantity) {
+        this.account = account;
+        this.type = type;
+        this.bidQuantity = bidQuantity;
     }
 
     public Integer getId() {

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "rulename")
 public class RuleName {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     public String name;
@@ -17,6 +17,15 @@ public class RuleName {
     public String sqlPart;
 
     public RuleName() {
+    }
+
+    public RuleName(String name, String description, String json, String template, String sqlStr, String sqlPart) {
+        this.name = name;
+        this.description = description;
+        this.json = json;
+        this.template = template;
+        this.sqlStr = sqlStr;
+        this.sqlPart = sqlPart;
     }
 
     public Integer getId() {
