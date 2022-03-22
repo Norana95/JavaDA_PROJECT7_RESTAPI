@@ -14,7 +14,6 @@ public class HomeController {
     }
 
     @RequestMapping("/admin/home")
-    @RolesAllowed("ADMIN")
     public String adminHome(Model model) {
         return "redirect:/bidList/list";
     }
