@@ -26,7 +26,7 @@ public class BidListController {
     public String home(Model model)
     // TODO: call service find all bids to show to the view
     {
-        model.addAttribute("listOfBid", bidListService.getAllBid());
+        model.addAttribute("bidlists", bidListService.getAllBid());
         return "bidList/list";
     }
 
