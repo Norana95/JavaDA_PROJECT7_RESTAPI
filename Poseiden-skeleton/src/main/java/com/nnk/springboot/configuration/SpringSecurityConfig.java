@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,17 +27,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user/*").hasRole("USER")
-                .anyRequest().authenticated()
-                .antMatchers("/admin/*").hasRole("ADMIN");
+                .antMatchers("/login").permitAll()
+                .antMatchers("/user/list").hasRole("ADMIN")
+                .anyRequest().authenticated();
 
         // Login process
         http
-                .formLogin();
+                .formLogin()
+                .defaultSuccessUrl("/bidList/list", true);// Transition destination after success
+
     }
 
 }
