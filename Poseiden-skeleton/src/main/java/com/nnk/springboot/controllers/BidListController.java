@@ -10,21 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.validation.Valid;
-import java.util.Optional;
-
 
 @Controller
 public class BidListController {
 
-    // TODO: Inject Bid service
     @Autowired
     BidListService bidListService;
 
     @RequestMapping("/bidList/list")
     public String home(Model model)
-    // TODO: call service find all bids to show to the view
     {
         model.addAttribute("bidlists", bidListService.getAllBid());
         return "bidList/list";
@@ -37,37 +32,39 @@ public class BidListController {
 
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return bid list
         if (result.hasErrors() || bidListService.findBidByAccount(bid.getAccount()) != null) {
-            return "bidlist/add"; // mettre un message qui dit que le bid existe déja.
+            model.addAttribute("msgerror", "bidlist exist in database");
+            return "/bidList/add";
         }
-        bidListService.addBid(bid);
-        return "bidList/list";
+        else {
+            bidListService.addBid(bid);
+        }
+        return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get BidList by Id and to model then show to the form
-        Optional<BidList> bidList = bidListService.findBidListById(id);
-        model.addAttribute("bid", bidList);
+        BidList bidList = bidListService.findBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
+        model.addAttribute("bidList", bidList);
         return "bidList/update";
     }
 
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                             BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update BidList and return list BidList
+        if (result.hasErrors()) {
+            return "bidList/update";
+        }
         bidListService.updateBid(bidList);
-        model.addAttribute("bidlist", bidListService.getAllBid());
-        //quand on met model.addattribute c'est pour que ça s'affiche ou ? dans le return qui est en bas?
+        model.addAttribute("bidlists", bidListService.getAllBid());
         return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find BidList by Id and delete the bid, return to BidList list
-        Optional<BidList> bidList = bidListService.findBidListById(id);
-        //bidListService.deleteBid(bidList); // pourquoi ce probleme???
+        BidList bidList = bidListService.findBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
+        bidListService.deleteBid(bidList);
+        model.addAttribute("bidlists", bidListService.getAllBid());
         return "redirect:/bidList/list";
     }
 }
