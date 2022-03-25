@@ -56,7 +56,6 @@ public class BidListController {
             return "bidList/update";
         }
         bidListService.updateBid(bidList);
-        model.addAttribute("bidlists", bidListService.getAllBid());
         return "redirect:/bidList/list";
     }
 
@@ -64,7 +63,6 @@ public class BidListController {
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         BidList bidList = bidListService.findBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
         bidListService.deleteBid(bidList);
-        model.addAttribute("bidlists", bidListService.getAllBid());
         return "redirect:/bidList/list";
     }
 }
