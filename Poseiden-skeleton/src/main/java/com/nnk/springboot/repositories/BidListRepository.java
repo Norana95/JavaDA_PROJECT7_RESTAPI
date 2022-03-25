@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BidListRepository extends JpaRepository<BidList, Integer> {
+
     @Query("SELECT u FROM BidList u WHERE u.account = :account")
     BidList findBidByAccount(String account);
 }
