@@ -35,9 +35,7 @@ public class RuleNameController {
         if (result.hasErrors()) {
             return "ruleName/add";
         }
-        else {
-            ruleNameService.addRule(rule);
-        }
+        ruleNameService.addRule(rule);
         return "redirect:/ruleName/list";
     }
 

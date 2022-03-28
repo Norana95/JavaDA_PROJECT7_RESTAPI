@@ -1,10 +1,8 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.service.CurvePointService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,17 +28,20 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
+    public String addCurvePointForm(CurvePoint curvePoint) {
         return "curvePoint/add";
     }
 
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
-        if (!result.hasErrors()) {
-            curvePointService.saveCurvePoint(curvePoint);
-            return "redirect:/curvePoint/list";
+        if (result.hasErrors() || curvePointService.findCurvePointById(curvePoint.curveId).isPresent()) {
+            model.addAttribute("msgerror", "curvePoint exist in database");
+            return "/curvePoint/add";
         }
-        return "curvePoint/add";
+        else {
+            curvePointService.saveCurvePoint(curvePoint);
+        }
+        return "redirect:/curvePoint/list";
     }
 
     @GetMapping("/curvePoint/update/{id}")
