@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -19,25 +18,30 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
     @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("userPass")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
+    // méthode avec la classe AuthenticationManagerBuilder  pour gérer l'ensemble de règles d'authentification.
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("user").password(passwordEncoder().encode("user")).roles("user");
     }
 
     @Override
+    //  méthode à la  classe HTTPSecurity  pour pousser toutes les requêtes HTTP à travers la chaîne de filtrage de sécurité et configurez la page de connexion par défaut avec la   formLogin()  méthode.
+    // httpsecurity est juste pour les requettes http entrante
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/user/list").hasRole("ADMIN")
-                .anyRequest().authenticated();
-
-        // Login process
         http
-                .formLogin()
+                .authorizeRequests()
+                .antMatchers("/user/list").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .loginPage("/")
                 .defaultSuccessUrl("/bidList/list", true);// Transition destination after success
+        //logout process
+        http
+                .logout()
+                .logoutSuccessUrl("/home")
+                .invalidateHttpSession(true);
 
     }
 
