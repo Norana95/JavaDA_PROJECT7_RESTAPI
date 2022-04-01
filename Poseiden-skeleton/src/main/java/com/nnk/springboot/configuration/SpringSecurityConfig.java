@@ -20,25 +20,29 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("userPass")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
+    // méthode avec la classe AuthenticationManagerBuilder pour gérer l'ensemble de règles d'authentification.
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("user").password(passwordEncoder().encode("user")).roles("user");
     }
 
     @Override
+    //  Méthode à la classe HTTPSecurity pour pousser toutes les requêtes HTTP à travers la chaîne de filtrage de sécurité et configurez la page de connexion par défaut avec la formLogin()  méthode.
+    // Httpsecurity est juste pour les requettes http entrante
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/user/list").hasRole("ADMIN")
-                .anyRequest().authenticated();
-
-        // Login process
         http
+                .authorizeRequests()
+                .antMatchers("/user/list", "/admin/home").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                .defaultSuccessUrl("/bidList/list", true);// Transition destination after success
-
+                .defaultSuccessUrl("/bidList/list", true)// Transition destination after success
+                .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/bidList/list", true)// Transition destination after success
+                //logout process
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/app-logout"))
+                .logoutSuccessUrl("/");
     }
-
 }

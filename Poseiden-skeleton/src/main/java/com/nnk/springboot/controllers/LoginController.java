@@ -3,9 +3,12 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("app")
@@ -28,7 +31,10 @@ public class LoginController {
         mav.setViewName("user/list");
         return mav;
     }
-
+    @RequestMapping("/*")
+    public Model getUserInfo(Principal user, Model model) {
+        return model.addAttribute("userConnected", user.getName());
+    }
     @GetMapping("error")
     public ModelAndView error() {
         ModelAndView mav = new ModelAndView();
