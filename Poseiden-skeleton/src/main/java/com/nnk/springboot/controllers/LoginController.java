@@ -31,10 +31,7 @@ public class LoginController {
         mav.setViewName("user/list");
         return mav;
     }
-    @RequestMapping("/*")
-    public Model getUserInfo(Principal user, Model model) {
-        return model.addAttribute("userConnected", user.getName());
-    }
+
     @GetMapping("error")
     public ModelAndView error() {
         ModelAndView mav = new ModelAndView();
@@ -43,4 +40,5 @@ public class LoginController {
         mav.setViewName("403");
         return mav;
     }
+
 }

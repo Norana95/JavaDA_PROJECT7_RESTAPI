@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 @Controller
 public class UserController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -71,5 +73,11 @@ public class UserController {
         userRepository.delete(user);
         model.addAttribute("users", userRepository.findAll());
         return "redirect:/user/list";
+    }
+
+    @PostConstruct
+    public void createUserAdmin(){
+        User user = new User("admin", new BCryptPasswordEncoder().encode("admin"),"admin","admin");
+        userRepository.save(user);
     }
 }
