@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping("/user/list")
     public String home(Model model) {
@@ -77,7 +81,7 @@ public class UserController {
 
     @PostConstruct
     public void createUserAdmin(){
-        User user = new User("admin", new BCryptPasswordEncoder().encode("admin"),"admin","admin");
+        User user = new User("admin", new BCryptPasswordEncoder().encode("adminA5$"),"admin","admin");
         userRepository.save(user);
     }
 }

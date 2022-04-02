@@ -2,6 +2,7 @@ package com.nnk.springboot.configuration;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${spring.websecurity.debug:false}")
+    boolean webSecurityDebug;
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -29,26 +34,29 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("user/list","/admin/home").hasAuthority("ADMIN").anyRequest()
-                .authenticated().and().csrf().disable().formLogin()
-                .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/home")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and().logout()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/anonymous*").anonymous()
+                .antMatchers("/login*", "/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/bidList/list", true)
+                .failureUrl("/login.html?error=true")
+                .and()
+                .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/app-logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/")
+                .and();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .debug(webSecurityDebug);
     }
 
     @Bean

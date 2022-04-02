@@ -3,6 +3,8 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.service.RatingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +22,18 @@ public class RatingController {
     @Autowired
     RatingService ratingService;
 
+    Logger logger = LoggerFactory.getLogger(RatingController.class);
+
     @RequestMapping("/rating/list")
     public String home(Model model) {
         model.addAttribute("ratings", ratingService.getAllRating());
+        logger.info("get home rating in Controller");
         return "rating/list";
     }
 
     @GetMapping("/rating/add")
     public String addRatingForm(Rating rating) {
+        logger.info("get addRatingForm donne !");
         return "rating/add";
     }
 
@@ -35,10 +41,12 @@ public class RatingController {
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
         if (result.hasErrors() || ratingService.findByOrderNumber(rating.getOrderNumber()) != null) {
             model.addAttribute("msgerror", "rating exist in database");
+            logger.error("rating exist in database or input error ");
             return "rating/add";
         }
         else {
             ratingService.addRating(rating);
+            logger.info("validate rating done in Controller");
         }
         return "redirect:/rating/list";
     }
@@ -47,6 +55,7 @@ public class RatingController {
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         Rating rating = ratingService.findRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
         model.addAttribute("rating", rating);
+        logger.info("Get UpdateForm rating in contorller done !");
         return "rating/update";
     }
 
@@ -54,9 +63,11 @@ public class RatingController {
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                                BindingResult result, Model model) {
         if (result.hasErrors()) {
+            logger.error("error input");
             return "rating/update";
         }
         ratingService.updateRating(rating);
+        logger.info("updateRating in the controller done !");
         return "redirect:/rating/list";
     }
 
@@ -64,6 +75,7 @@ public class RatingController {
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
         Rating rating = ratingService.findRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
         ratingService.deleteRating(rating);
+        logger.info("delete rating in Controller done !");
         return "redirect:/rating/list";
     }
 }

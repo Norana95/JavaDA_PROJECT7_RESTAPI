@@ -2,6 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ public class RuleNameController {
 
     @Autowired
     RuleNameService ruleNameService;
+
+    Logger logger = LoggerFactory.getLogger(RuleNameController.class);
 
     @RequestMapping("/ruleName/list")
     public String home(Model model) {
