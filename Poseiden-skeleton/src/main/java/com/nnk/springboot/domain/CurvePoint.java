@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -13,9 +14,12 @@ public class CurvePoint {
     @Column(name = "id", nullable = false)
     private Integer id;
     @NotNull(message = "must not be null")
+    @Digits(integer = 10, fraction = 5)
     public Integer curveId;
     public Timestamp asOfDate;
+    @Digits(integer = 10, fraction = 5)
     public  Double term;
+    @Digits(integer = 10, fraction = 5)
     public Double value;
     public Timestamp creationDate;
 

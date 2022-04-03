@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 
 @Entity
 @Table(name = "rating")
@@ -12,6 +13,7 @@ public class Rating {
     public String moodysRating;
     public String sandPRating;
     public String fitchRating;
+    @Digits(integer = 10, fraction = 5)
     public Integer orderNumber;
 
     public Rating() {

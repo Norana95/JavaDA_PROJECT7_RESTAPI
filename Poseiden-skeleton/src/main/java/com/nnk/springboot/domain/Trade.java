@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import java.sql.Timestamp;
 
 
@@ -13,9 +14,13 @@ public class Trade {
     private Integer tradeId;
     public String account;
     public String type;
+    @Digits(integer = 10, fraction = 5)
     public Double buyQuantity;
+    @Digits(integer = 10, fraction = 5)
     public Double sellQuantity;
+    @Digits(integer = 10, fraction = 5)
     public Double buyPrice;
+    @Digits(integer = 10, fraction = 5)
     public Double sellPrice;
     public String benchmark;
     public Timestamp tradeDate;
