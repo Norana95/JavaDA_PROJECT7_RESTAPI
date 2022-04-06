@@ -12,7 +12,6 @@ public class BidList {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @Digits(integer = 10, fraction = 5)
     private Integer BidListId;
     @NotBlank(message ="Account is mandatory")
     private String account;

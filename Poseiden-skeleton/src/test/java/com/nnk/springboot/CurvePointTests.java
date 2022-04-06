@@ -37,6 +37,10 @@ public class CurvePointTests {
         List<CurvePoint> listResult = curvePointRepository.findAll();
         Assert.assertTrue(listResult.size() > 0);
 
+        //find by id
+        Optional<CurvePoint> curvePointId = curvePointRepository.findById(curvePoint.getId());
+        Assert.assertEquals(curvePointId.get().getId(), curvePoint.getId());
+
         // Delete
         Integer id = curvePoint.getId();
         curvePointRepository.delete(curvePoint);

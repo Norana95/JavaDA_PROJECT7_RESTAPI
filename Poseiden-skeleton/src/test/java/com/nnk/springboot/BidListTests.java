@@ -33,9 +33,13 @@ public class BidListTests {
 		bid = bidListRepository.save(bid);
 		Assert.assertEquals(bid.getBidQuantity(), 20d, 20d);
 
-		// Find
+		// Find by id
 		List<BidList> listResult = bidListRepository.findAll();
 		Assert.assertTrue(listResult.size() > 0);
+
+		// Find by account
+		BidList bidByAccount = bidListRepository.findBidByAccount("Account Test");
+		Assert.assertEquals(bidByAccount.getAccount(), "Account Test");
 
 		// Delete
 		Integer id = bid.getBidListId();

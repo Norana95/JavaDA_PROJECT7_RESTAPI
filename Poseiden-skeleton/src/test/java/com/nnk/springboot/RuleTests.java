@@ -1,5 +1,6 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.junit.Assert;
@@ -36,6 +37,10 @@ public class RuleTests {
 		// Find
 		List<RuleName> listResult = ruleNameRepository.findAll();
 		Assert.assertTrue(listResult.size() > 0);
+
+		// Find by id
+		Optional<RuleName> ruleId = ruleNameRepository.findById(rule.getId());
+		Assert.assertEquals(ruleId.get().getId(), rule.getId());
 
 		// Delete
 		Integer id = rule.getId();

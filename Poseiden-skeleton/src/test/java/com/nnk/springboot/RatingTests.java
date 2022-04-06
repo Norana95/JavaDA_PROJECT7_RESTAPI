@@ -1,5 +1,6 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 import org.junit.Assert;
@@ -36,6 +37,15 @@ public class RatingTests {
         // Find
         List<Rating> listResult = ratingRepository.findAll();
         Assert.assertTrue(listResult.size() > 0);
+
+        //find by id
+        Optional<Rating> ratingId = ratingRepository.findById(rating.getId());
+        Assert.assertEquals(ratingId.get().getId(), rating.getId());
+
+        //find by Order Number à revoir !!!!!!!!!!
+        Rating ratingOrderNumber = ratingRepository.findRatingByOrderNumber(10);
+        Assert.assertEquals(rating.getOrderNumber(), ratingOrderNumber.getOrderNumber());
+
 
         // Delete
         Integer id = rating.getId();

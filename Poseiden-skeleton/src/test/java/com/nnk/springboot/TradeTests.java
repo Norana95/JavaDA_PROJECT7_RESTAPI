@@ -1,5 +1,6 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
 import org.junit.Assert;
@@ -36,6 +37,10 @@ public class TradeTests {
         // Find
         List<Trade> listResult = tradeRepository.findAll();
         Assert.assertTrue(listResult.size() > 0);
+
+        // Find by id
+        Optional<Trade> tradeId = tradeRepository.findById(trade.getTradeId());
+        Assert.assertEquals(tradeId.get().getTradeId(), trade.getTradeId());
 
         // Delete
         Integer id = trade.getTradeId();

@@ -36,8 +36,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/anonymous*").anonymous()
+                .antMatchers("/admin/**", "user/list").hasAuthority("ADMIN")
+                .antMatchers("/").permitAll()
                 .antMatchers("/login*", "/").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -46,11 +46,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/bidList/list", true)
                 .failureUrl("/login.html?error=true")
                 .and()
+                .oauth2Login().permitAll().defaultSuccessUrl("/bidList/list", true)
+                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/app-logout"))
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/")
-                .and();
+                .logoutSuccessUrl("/");
     }
 
     @Override
