@@ -2,6 +2,7 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class BidListController {
@@ -20,11 +22,15 @@ public class BidListController {
     @Autowired
     BidListService bidListService;
 
+    @Autowired
+    UserDetailsServiceImpl userService;
+
     Logger logger = LoggerFactory.getLogger(BidListController.class);
 
     @RequestMapping("/bidList/list")
-    public String home(Model model)
+    public String home(Model model, Principal principal)
     {
+        model.addAttribute("userName", userService.getUserFromPrincipal(principal));
         model.addAttribute("bidlists", bidListService.getAllBid());
         logger.info("get bidlist done !");
         return "bidList/list";

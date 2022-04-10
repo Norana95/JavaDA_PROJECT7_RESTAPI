@@ -2,6 +2,7 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
+import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class RuleNameController {
@@ -21,10 +23,14 @@ public class RuleNameController {
     @Autowired
     RuleNameService ruleNameService;
 
+    @Autowired
+    UserDetailsServiceImpl userService;
+
     Logger logger = LoggerFactory.getLogger(RuleNameController.class);
 
     @RequestMapping("/ruleName/list")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
+        model.addAttribute("userName", userService.getUserFromPrincipal(principal));
         model.addAttribute("rules", ruleNameService.getAllRule());
         logger.info("get page Home in controller done !");
         return "ruleName/list";

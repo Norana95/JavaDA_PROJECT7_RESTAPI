@@ -2,6 +2,7 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.service.TradeService;
+import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class TradeController {
@@ -21,10 +23,14 @@ public class TradeController {
     @Autowired
     TradeService tradeService;
 
+    @Autowired
+    UserDetailsServiceImpl userService;
+
     Logger logger = LoggerFactory.getLogger(TradeController.class);
 
     @RequestMapping("/trade/list")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
+        model.addAttribute("userName", userService.getUserFromPrincipal(principal));
         model.addAttribute("trades", tradeService.getAllTrade());
         logger.info("get page Home trade in controller done !");
         return "trade/list";

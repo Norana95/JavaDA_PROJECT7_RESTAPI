@@ -2,6 +2,7 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.service.CurvePointService;
+import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,10 +24,14 @@ public class CurveController {
     @Autowired
     CurvePointService curvePointService;
 
+    @Autowired
+    UserDetailsServiceImpl userService;
+
     Logger logger = LoggerFactory.getLogger(CurveController.class);
 
     @RequestMapping("/curvePoint/list")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
+        model.addAttribute("userName", userService.getUserFromPrincipal(principal));
         List<CurvePoint> curvePointList = curvePointService.findAllCurvePoint();
         logger.info("get home in Controller");
         model.addAttribute("curvePoints", curvePointList);

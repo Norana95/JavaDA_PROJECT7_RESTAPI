@@ -3,6 +3,7 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.service.RatingService;
+import com.nnk.springboot.service.implement.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class RatingController {
@@ -22,10 +24,14 @@ public class RatingController {
     @Autowired
     RatingService ratingService;
 
+    @Autowired
+    UserDetailsServiceImpl userService;
+
     Logger logger = LoggerFactory.getLogger(RatingController.class);
 
     @RequestMapping("/rating/list")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
+        model.addAttribute("userName", userService.getUserFromPrincipal(principal));
         model.addAttribute("ratings", ratingService.getAllRating());
         logger.info("get home rating in Controller");
         return "rating/list";

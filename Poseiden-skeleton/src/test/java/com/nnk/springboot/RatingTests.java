@@ -42,10 +42,9 @@ public class RatingTests {
         Optional<Rating> ratingId = ratingRepository.findById(rating.getId());
         Assert.assertEquals(ratingId.get().getId(), rating.getId());
 
-        //find by Order Number à revoir !!!!!!!!!!
-        Rating ratingOrderNumber = ratingRepository.findRatingByOrderNumber(10);
-        Assert.assertEquals(rating.getOrderNumber(), ratingOrderNumber.getOrderNumber());
-
+        //find by Order Number
+        Rating ratingOrderNumber = ratingRepository.findRatingByOrderNumber(20);
+        Assert.assertNotNull(ratingOrderNumber);
 
         // Delete
         Integer id = rating.getId();

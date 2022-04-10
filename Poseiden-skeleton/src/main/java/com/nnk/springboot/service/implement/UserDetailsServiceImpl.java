@@ -11,9 +11,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
-    Logger logger = LoggerFactory.getLogger(TradeService.class);
+    Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     @Transactional
@@ -35,16 +38,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return buildUserForAuthentication(user, authorities);
     }
 
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> grantedAuthorities) {
+    public UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> grantedAuthorities) {
         logger.info("inside methode buildUserForAuthentication in UserDetailsServiceImpl");
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
-    private List<GrantedAuthority> getUserAuthority(String role) {
+    public List<GrantedAuthority> getUserAuthority(String role) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role));
         logger.info("add role");
         return grantedAuthorities;
+    }
+
+    public String getUserFromPrincipal(Principal loggedInUser) {
+        if (loggedInUser instanceof OAuth2AuthenticationToken) {
+            //extraire les infos user
+            OAuth2User principal = ((OAuth2AuthenticationToken) loggedInUser).getPrincipal();
+            return   principal.getAttributes().get("login").toString();
+        }
+        else {
+            return loggedInUser.getName();
+        }
     }
 
 }
